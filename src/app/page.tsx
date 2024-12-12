@@ -1,5 +1,6 @@
 "use client";
-import { JSX, useState } from "react";
+import { randomUUID } from "crypto";
+import { useState } from "react";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,16 +41,12 @@ export default function Home() {
     );
   }, 0);
 
-  const highlightText = (
-    text: string,
-    term: string,
-    articleId: number
-  ): JSX.Element[] => {
+  const highlightText = (text: string, term: string, articleId: number) => {
     if (!term) return [<>{text}</>];
     const regex = new RegExp(`(${term})`, "gi");
-
     return text.split(regex).map((part, index) => {
-      const key = `${articleId}-${index}-${part}`;
+      const key = `${articleId}-${index}-${randomUUID()}`;
+      console.log("id", key);
       return regex.test(part) ? (
         <span key={key} className="bg-yellow-300">
           {part}
